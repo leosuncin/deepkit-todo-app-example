@@ -1,3 +1,3 @@
 export class AppConfig {
-    environment: 'production' | 'development' = 'development';
+  environment: 'production' | 'development' = 'development';
 }

@@ -9,26 +9,26 @@ import { HelloWorldControllerHttp } from './src/controller/hello-world.http';
 import { HelloWorldControllerRpc } from './src/controller/hello-world.rpc';
 
 new App({
-    config: AppConfig,
-    controllers: [
-        HelloWorldControllerCli,
-        HelloWorldControllerHttp,
-        HelloWorldControllerRpc,
-    ],
-    providers: [
-        Service,
-    ],
-    imports: [new FrameworkModule({ debug: true })]
+  config: AppConfig,
+  controllers: [
+    HelloWorldControllerCli,
+    HelloWorldControllerHttp,
+    HelloWorldControllerRpc,
+  ],
+  providers: [Service],
+  imports: [new FrameworkModule({ debug: true })],
 })
-    .loadConfigFromEnv({ envFilePath: ['production.env', '.env'] })
-    .setup((module, config: AppConfig) => {
-        if (config.environment === 'production') {
-            // enable logging JSON messages instead of formatted strings
-            // @ts-expect-error missing type
-            module.setupGlobalProvider<Logger>().setTransport([new JSONTransport]);
+  .loadConfigFromEnv({ envFilePath: ['production.env', '.env'] })
+  .setup((module, config: AppConfig) => {
+    if (config.environment === 'production') {
+      // enable logging JSON messages instead of formatted strings
+      // @ts-expect-error missing type
+      module.setupGlobalProvider<Logger>().setTransport([new JSONTransport()]);
 
-            // disable debugging
-            module.getImportedModuleByClass(FrameworkModule).configure({debug: false});
-        }
-    })
-    .run();
+      // disable debugging
+      module
+        .getImportedModuleByClass(FrameworkModule)
+        .configure({ debug: false });
+    }
+  })
+  .run();

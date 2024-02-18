@@ -5,26 +5,28 @@ import { expect, test } from '@jest/globals';
 import { Service } from '../src/app/service';
 
 test('first test', () => {
-    expect(1 + 1).toBe(2);
+  expect(1 + 1).toBe(2);
 });
 
 test('service directly', () => {
-    const memoryLogger = new MemoryLoggerTransport;
-    const logger = new Logger([memoryLogger]);
-    const service = new Service(logger);
+  const memoryLogger = new MemoryLoggerTransport();
+  const logger = new Logger([memoryLogger]);
+  const service = new Service(logger);
 
-    const result = service.doIt();
-    expect(result).toBe(true);
-    expect(memoryLogger.messages[0]).toMatchObject({message: 'Hello from the Service'});
+  const result = service.doIt();
+  expect(result).toBe(true);
+  expect(memoryLogger.messages[0]).toMatchObject({
+    message: 'Hello from the Service',
+  });
 });
 
 test('service via DI container', () => {
-    const testing = createTestingApp({
-        providers: [Service],
-    });
+  const testing = createTestingApp({
+    providers: [Service],
+  });
 
-    const service = testing.app.get(Service);
+  const service = testing.app.get(Service);
 
-    const result = service.doIt();
-    expect(result).toBe(true);
+  const result = service.doIt();
+  expect(result).toBe(true);
 });

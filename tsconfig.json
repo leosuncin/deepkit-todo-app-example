@@ -10,8 +10,5 @@
     "moduleResolution": "node"
   },
   "reflection": true,
-  "files": [
-    "client-rpc.ts",
-    "app.ts"
-  ]
+  "files": ["client-rpc.ts", "app.ts"]
 }

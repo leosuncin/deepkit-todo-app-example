@@ -6,11 +6,13 @@ import { Service } from '../app/service';
 
 @cli.controller('hello')
 export class HelloWorldControllerCli {
-    constructor(private logger: Logger, private service: Service) {
-    }
+  constructor(
+    private logger: Logger,
+    private service: Service,
+  ) {}
 
-    async execute(name: string & MaxLength<6> = 'World') {
-        this.service.doIt();
-        this.logger.log(`Hello ${name}!`);
-    }
+  async execute(name: string & MaxLength<6> = 'World') {
+    this.service.doIt();
+    this.logger.log(`Hello ${name}!`);
+  }
 }
