@@ -8,7 +8,10 @@ import { TaskService } from './src/app/task.service';
 import { HelloWorldControllerCli } from './src/controller/hello-world.cli';
 import { HelloWorldControllerHttp } from './src/controller/hello-world.http';
 import { HelloWorldControllerRpc } from './src/controller/hello-world.rpc';
-import { TaskListCommand } from './src/controller/task.controller.cli';
+import {
+  TaskCreateCommand,
+  TaskListCommand,
+} from './src/controller/task.controller.cli';
 
 new App({
   config: AppConfig,
@@ -17,6 +20,7 @@ new App({
     HelloWorldControllerHttp,
     HelloWorldControllerRpc,
     TaskListCommand,
+    TaskCreateCommand,
   ],
   providers: [Service, TaskService],
   imports: [new FrameworkModule({ debug: true })],
