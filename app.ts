@@ -4,6 +4,7 @@ import { JSONTransport, Logger } from '@deepkit/logger';
 
 import { AppConfig } from './src/app/config';
 import { Service } from './src/app/service';
+import { TaskParameterResolver } from './src/app/task-parameter.resolver';
 import { TaskService } from './src/app/task.service';
 import { HelloWorldControllerCli } from './src/controller/hello-world.cli';
 import { HelloWorldControllerHttp } from './src/controller/hello-world.http';
@@ -12,6 +13,7 @@ import {
   TaskCreateCommand,
   TaskListCommand,
 } from './src/controller/task.controller.cli';
+import { TaskControllerHttp } from './src/controller/task.controller.http';
 
 new App({
   config: AppConfig,
@@ -21,8 +23,9 @@ new App({
     HelloWorldControllerRpc,
     TaskListCommand,
     TaskCreateCommand,
+    TaskControllerHttp,
   ],
-  providers: [Service, TaskService],
+  providers: [Service, TaskService, TaskParameterResolver],
   imports: [new FrameworkModule({ debug: true })],
 })
   .loadConfigFromEnv({ envFilePath: ['production.env', '.env'] })

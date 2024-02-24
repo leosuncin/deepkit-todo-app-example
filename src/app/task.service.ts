@@ -1,9 +1,9 @@
 import { MinLength, Partial, UUID, uuid } from '@deepkit/type';
 
-export interface Task {
-  id: UUID;
-  title: string & MinLength<3>;
-  completed: boolean;
+export class Task {
+  id!: UUID;
+  title!: string & MinLength<3>;
+  completed!: boolean;
 }
 
 export class TaskService {
