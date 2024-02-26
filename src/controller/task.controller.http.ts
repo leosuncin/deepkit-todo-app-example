@@ -10,18 +10,18 @@ export class TaskControllerHttp {
   constructor(private taskService: TaskService) {}
 
   @http.POST()
-  createOne({ title }: HttpBody<Pick<Task, 'title'>>): Task {
+  createOne({ title }: HttpBody<Pick<Task, 'title'>>): Promise<Task> {
     return this.taskService.create(title);
   }
 
   @http.GET()
-  listAll(): Task[] {
+  listAll(): Promise<Task[]> {
     return this.taskService.getAll();
   }
 
   @http.DELETE()
-  deleteAll() {
-    this.taskService.deleteAll();
+  async deleteAll(): Promise<Response> {
+    await this.taskService.deleteAll();
 
     return new Response('', 'text/plain', 204);
   }
@@ -32,13 +32,16 @@ export class TaskControllerHttp {
   }
 
   @http.PATCH('/:id')
-  updateOne(task: Task, changes: HttpBody<Partial<Omit<Task, 'id'>>>): Task {
-    return this.taskService.update(task.id, changes)!;
+  updateOne(
+    task: Task,
+    changes: HttpBody<Partial<Omit<Task, 'id'>>>,
+  ): Promise<Task> {
+    return this.taskService.update(task.id, changes) as Promise<Task>;
   }
 
   @http.DELETE('/:id')
-  deleteOne(task: Task) {
-    this.taskService.delete(task.id);
+  async deleteOne(task: Task): Promise<Response> {
+    await this.taskService.delete(task.id);
 
     return new Response('', 'text/plain', 204);
   }

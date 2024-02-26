@@ -11,8 +11,8 @@ export class TaskListCommand implements Command {
     private logger: Logger,
   ) {}
 
-  execute() {
-    const tasks = this.taskService.getAll();
+  async execute(): Promise<void> {
+    const tasks = await this.taskService.getAll();
     this.logger.log(tasks);
   }
 }
@@ -24,8 +24,8 @@ export class TaskCreateCommand implements Command {
     private logger: Logger,
   ) {}
 
-  execute(title: Task['title']): void {
-    const task = this.taskService.create(title);
+  async execute(title: Task['title']): Promise<void> {
+    const task = await this.taskService.create(title);
     this.logger.log(JSON.stringify(task, null, 2));
   }
 }

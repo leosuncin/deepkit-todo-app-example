@@ -1,52 +1,54 @@
 import { Partial, UUID, uuid } from '@deepkit/type';
+import { Database } from '@deepkit/orm';
 
 import { Task } from './task.entity';
 
 export class TaskService {
-  #tasks = new Map<UUID, Task>();
+  constructor(private readonly db: Database) {}
 
-  create(title: Task['title']): Task {
-    const task: Task = {
-      id: uuid(),
-      title,
-      completed: false,
-    };
+  async create(title: Task['title']): Promise<Task> {
+    const task = new Task(title);
 
-    this.#tasks.set(task.id, task);
+    await this.db.persist(task);
 
     return task;
   }
 
-  get(id: UUID): Task | undefined {
-    return this.#tasks.get(id);
+  get(id: UUID): Promise<Task | undefined> {
+    return this.db.query(Task).filter({ id }).findOneOrUndefined();
   }
 
-  getAll(): Task[] {
-    return Array.from(this.#tasks.values());
+  getAll(): Promise<Task[]> {
+    return this.db.query(Task).find();
   }
 
-  update(id: UUID, changes: Partial<Omit<Task, 'id'>>): Task | undefined {
-    const task = this.get(id);
+  async update(
+    id: UUID,
+    changes: Partial<Omit<Task, 'id'>>,
+  ): Promise<Task | undefined> {
+    const task = await this.get(id);
 
     if (task) {
       task.title = changes.title ?? task.title;
       task.completed = changes.completed ?? task.completed;
 
-      this.#tasks.set(id, task);
+      await this.db.persist(task);
     }
 
     return task;
   }
 
-  delete(id: UUID): Task | undefined {
-    const task = this.get(id);
+  async delete(id: UUID): Promise<Task | undefined> {
+    const task = await this.get(id);
 
-    this.#tasks.delete(id);
+    if (!task) return;
+
+    await this.db.remove(task);
 
     return task;
   }
 
-  deleteAll(): void {
-    this.#tasks.clear();
+  async deleteAll(): Promise<void> {
+    await this.db.query(Task).deleteMany();
   }
 }

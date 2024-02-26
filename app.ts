@@ -1,10 +1,13 @@
 import { App } from '@deepkit/app';
 import { FrameworkModule } from '@deepkit/framework';
 import { JSONTransport, Logger } from '@deepkit/logger';
+import { Database } from '@deepkit/orm';
+import { SQLiteDatabaseAdapter } from '@deepkit/sqlite';
 
 import { AppConfig } from './src/app/config';
 import { Service } from './src/app/service';
 import { TaskParameterResolver } from './src/app/task-parameter.resolver';
+import { Task } from './src/app/task.entity';
 import { TaskService } from './src/app/task.service';
 import { HelloWorldControllerCli } from './src/controller/hello-world.cli';
 import { HelloWorldControllerHttp } from './src/controller/hello-world.http';
@@ -27,7 +30,17 @@ new App({
     TaskControllerHttp,
     TaskControllerRpc,
   ],
-  providers: [Service, TaskService, TaskParameterResolver],
+  providers: [
+    {
+      provide: Database,
+      useFactory() {
+        return new Database(new SQLiteDatabaseAdapter('app.db'), [Task]);
+      },
+    },
+    Service,
+    TaskService,
+    TaskParameterResolver,
+  ],
   imports: [new FrameworkModule({ debug: true })],
 })
   .loadConfigFromEnv({ envFilePath: ['production.env', '.env'] })

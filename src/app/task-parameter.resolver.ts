@@ -10,8 +10,8 @@ import { TaskService } from './task.service';
 export class TaskParameterResolver implements RouteParameterResolver {
   constructor(private readonly taskService: TaskService) {}
 
-  resolve({ parameters }: RouteParameterResolverContext): Task {
-    const task = this.taskService.get(parameters.id);
+  async resolve({ parameters }: RouteParameterResolverContext): Promise<Task> {
+    const task = await this.taskService.get(parameters.id);
 
     if (!task) {
       throw new HttpNotFoundError('Task not found');

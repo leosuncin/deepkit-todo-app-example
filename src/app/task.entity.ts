@@ -1,14 +1,14 @@
-import { MinLength, PrimaryKey, UUID, entity } from '@deepkit/type';
+import { MinLength, PrimaryKey, UUID, entity, uuid } from '@deepkit/type';
 
-
-@entity.name('task')
+@entity.name('task').collection('tasks')
 export class Task {
   id!: UUID & PrimaryKey;
   title!: string & MinLength<3>;
   completed!: boolean;
 
-  constructor(title: string) {
-    this.title = title;
+  constructor(title?: string & MinLength<3>) {
+    this.id = uuid();
     this.completed = false;
+    if (title) this.title = title;
   }
 }

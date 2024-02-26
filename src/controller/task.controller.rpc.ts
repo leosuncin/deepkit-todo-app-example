@@ -8,17 +8,17 @@ export class TaskControllerRpc {
   constructor(private readonly taskService: TaskService) {}
 
   @rpc.action()
-  addTask(title: Task['title']): Task {
+  addTask(title: Task['title']): Promise<Task> {
     return this.taskService.create(title);
   }
 
   @rpc.action()
-  listTasks(): Task[] {
+  listTasks(): Promise<Task[]> {
     return this.taskService.getAll();
   }
 
   @rpc.action()
-  getTask(id: Task['id']): Task | undefined {
+  getTask(id: Task['id']): Promise<Task | undefined> {
     return this.taskService.get(id);
   }
 
@@ -26,17 +26,17 @@ export class TaskControllerRpc {
   editTask(
     id: Task['id'],
     changes: Partial<Omit<Task, 'id'>>,
-  ): Task | undefined {
+  ): Promise<Task | undefined> {
     return this.taskService.update(id, changes);
   }
 
   @rpc.action()
-  removeTask(id: Task['id']): Task | undefined {
+  removeTask(id: Task['id']): Promise<Task | undefined> {
     return this.taskService.delete(id);
   }
 
   @rpc.action()
-  clearTasks(): void {
-    this.taskService.deleteAll();
+  clearTasks(): Promise<void> {
+    return this.taskService.deleteAll();
   }
 }
