@@ -14,6 +14,7 @@ import {
   TaskListCommand,
 } from './src/controller/task.controller.cli';
 import { TaskControllerHttp } from './src/controller/task.controller.http';
+import { TaskControllerRpc } from './src/controller/task.controller.rpc';
 
 new App({
   config: AppConfig,
@@ -24,6 +25,7 @@ new App({
     TaskListCommand,
     TaskCreateCommand,
     TaskControllerHttp,
+    TaskControllerRpc,
   ],
   providers: [Service, TaskService, TaskParameterResolver],
   imports: [new FrameworkModule({ debug: true })],

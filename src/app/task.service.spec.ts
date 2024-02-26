@@ -79,16 +79,16 @@ describe('TaskService', () => {
     const task = taskService.create('Task 1');
 
     expect(taskService.getAll()).toHaveLength(1);
-    expect(taskService.delete(task.id)).toBe(true);
+    expect(taskService.delete(task.id)).toEqual(task);
     expect(taskService.getAll()).toHaveLength(0);
     expect(taskService.get(task.id)).toBeUndefined();
   });
 
-  it('return false when trying to delete a non-existing task', () => {
+  it('return undefined when trying to delete a non-existing task', () => {
     const taskService = new TaskService();
     const result = taskService.delete('non-existing-id');
 
-    expect(result).toBe(false);
+    expect(result).toBeUndefined();
   });
 
   it('clear the list of tasks when called', () => {

@@ -1,5 +1,6 @@
-import { MinLength, Partial, UUID, uuid } from '@deepkit/type';
+import { MinLength, Partial, UUID, uuid, entity } from '@deepkit/type';
 
+@entity.name('task')
 export class Task {
   id!: UUID;
   title!: string & MinLength<3>;
@@ -42,8 +43,12 @@ export class TaskService {
     return task;
   }
 
-  delete(id: UUID): boolean {
-    return this.#tasks.delete(id);
+  delete(id: UUID): Task | undefined {
+    const task = this.get(id);
+
+    this.#tasks.delete(id);
+
+    return task;
   }
 
   deleteAll(): void {
