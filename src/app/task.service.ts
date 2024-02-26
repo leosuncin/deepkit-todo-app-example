@@ -1,11 +1,6 @@
-import { MinLength, Partial, UUID, uuid, entity } from '@deepkit/type';
+import { Partial, UUID, uuid } from '@deepkit/type';
 
-@entity.name('task')
-export class Task {
-  id!: UUID;
-  title!: string & MinLength<3>;
-  completed!: boolean;
-}
+import { Task } from './task.entity';
 
 export class TaskService {
   #tasks = new Map<UUID, Task>();

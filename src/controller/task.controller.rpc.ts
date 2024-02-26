@@ -1,6 +1,7 @@
 import { rpc } from '@deepkit/rpc';
 
-import { Task, TaskService } from '../app/task.service';
+import { Task } from '../app/task.entity';
+import { TaskService } from '../app/task.service';
 
 @rpc.controller('tasks')
 export class TaskControllerRpc {

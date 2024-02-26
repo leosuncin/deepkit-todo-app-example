@@ -1,10 +1,11 @@
 import {
   HttpNotFoundError,
-  RouteParameterResolverContext,
   RouteParameterResolver,
+  RouteParameterResolverContext,
 } from '@deepkit/http';
 
-import { Task, TaskService } from './task.service';
+import { Task } from './task.entity';
+import { TaskService } from './task.service';
 
 export class TaskParameterResolver implements RouteParameterResolver {
   constructor(private readonly taskService: TaskService) {}

@@ -4,7 +4,8 @@ import { Logger, MemoryLoggerTransport } from '@deepkit/logger';
 import type { RemoteController, RpcClient } from '@deepkit/rpc';
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 
-import { Task, TaskService } from '../app/task.service';
+import { Task } from '../app/task.entity';
+import { TaskService } from '../app/task.service';
 import { TaskControllerRpc } from './task.controller.rpc';
 
 describe('TaskControllerRpc', () => {

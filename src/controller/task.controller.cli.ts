@@ -1,7 +1,8 @@
 import { Command, cli } from '@deepkit/app';
 import { Logger } from '@deepkit/logger';
 
-import { Task, TaskService } from '../app/task.service';
+import { Task } from '../app/task.entity';
+import { TaskService } from '../app/task.service';
 
 @cli.controller('task:list')
 export class TaskListCommand implements Command {

@@ -1,7 +1,8 @@
-import { HttpBody, http, HttpNotFoundError, Response } from '@deepkit/http';
+import { HttpBody, HttpNotFoundError, Response, http } from '@deepkit/http';
 
-import { Task, TaskService } from '../app/task.service';
 import { TaskParameterResolver } from '../app/task-parameter.resolver';
+import { Task } from '../app/task.entity';
+import { TaskService } from '../app/task.service';
 
 @http.controller('/tasks').group('task')
 @http.resolveParameter(Task, TaskParameterResolver)
