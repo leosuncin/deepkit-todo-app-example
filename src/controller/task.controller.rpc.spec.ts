@@ -1,6 +1,6 @@
-import type { App } from '@deepkit/app';
-import { createTestingApp, type TestingFacade } from '@deepkit/framework';
+import { createTestingApp } from '@deepkit/framework';
 import { Logger, MemoryLoggerTransport } from '@deepkit/logger';
+import { Database, MemoryDatabaseAdapter } from '@deepkit/orm';
 import type { RemoteController, RpcClient } from '@deepkit/rpc';
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 
@@ -9,7 +9,7 @@ import { TaskService } from '../app/task.service';
 import { TaskControllerRpc } from './task.controller.rpc';
 
 describe('TaskControllerRpc', () => {
-  let testing: TestingFacade<App<{ controllers: any[]; providers: any[] }>>;
+  let testing: ReturnType<typeof createTestingApp>;
   let client: RpcClient;
   let controller: RemoteController<TaskControllerRpc>;
 
@@ -19,8 +19,12 @@ describe('TaskControllerRpc', () => {
       providers: [
         {
           provide: Logger,
+          useValue: new Logger([new MemoryLoggerTransport()]),
+        },
+        {
+          provide: Database,
           useFactory() {
-            return new Logger([new MemoryLoggerTransport()]);
+            return new Database(new MemoryDatabaseAdapter(), [Task]);
           },
         },
         TaskService,
@@ -40,7 +44,7 @@ describe('TaskControllerRpc', () => {
   it('create a new task', async () => {
     const result = await controller.addTask('Hello World');
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       id: expect.any(String),
       title: 'Hello World',
       completed: false,
@@ -54,21 +58,25 @@ describe('TaskControllerRpc', () => {
   });
 
   it('return a task when given a valid identifier', async () => {
-    const task = testing.app.get(TaskService).create('Hello World');
+    const task = await testing.app.get(TaskService).create('Hello World');
     const result = await controller.getTask(task.id);
 
-    expect(result).toEqual(task);
+    expect(result).toMatchObject({
+      id: task.id,
+      title: 'Hello World',
+      completed: false,
+    });
     expect(result).toBeInstanceOf(Task);
   });
 
   it('update a task when given a valid identifier', async () => {
-    const task = testing.app.get(TaskService).create('Hello World');
+    const task = await testing.app.get(TaskService).create('Hello World');
     const result = await controller.editTask(task.id, {
       title: 'Hello Deepkit',
       completed: true,
     });
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       id: task.id,
       title: 'Hello Deepkit',
       completed: true,
@@ -76,22 +84,28 @@ describe('TaskControllerRpc', () => {
   });
 
   it('remove a task when given a valid identifier', async () => {
-    const task = testing.app.get(TaskService).create('Hello World');
+    const task = await testing.app.get(TaskService).create('Hello World');
     const result = await controller.removeTask(task.id);
 
-    expect(result).toEqual(task);
-    expect(testing.app.get(TaskService).get(task.id)).toBeUndefined();
+    expect(result).toMatchObject({
+      id: task.id,
+      title: task.title,
+      completed: task.completed,
+    });
+    await expect(
+      testing.app.get(TaskService).get(task.id),
+    ).resolves.toBeUndefined();
   });
 
   it('remove all of the tasks', async () => {
     const taskService = testing.app.get(TaskService);
-    taskService.create('Hello World');
-    taskService.create('Hello Deepkit');
+    await taskService.create('Hello World');
+    await taskService.create('Hello Deepkit');
 
-    expect(taskService.getAll()).toHaveLength(2);
+    await expect(taskService.getAll()).resolves.toHaveLength(2);
 
     await controller.clearTasks();
 
-    expect(taskService.getAll()).toEqual([]);
+    await expect(taskService.getAll()).resolves.toEqual([]);
   });
 });
