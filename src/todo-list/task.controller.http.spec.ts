@@ -4,10 +4,10 @@ import { Logger, MemoryLoggerTransport } from '@deepkit/logger';
 import { Database, MemoryDatabaseAdapter } from '@deepkit/orm';
 import { describe, expect, it } from '@jest/globals';
 
-import { TaskParameterResolver } from '../app/task-parameter.resolver';
-import { Task } from '../app/task.entity';
-import { TaskService } from '../app/task.service';
+import { TaskParameterResolver } from './task-parameter.resolver';
 import { TaskControllerHttp } from './task.controller.http';
+import { Task } from './task.entity';
+import { TaskService } from './task.service';
 
 describe('TaskControllerHttp', () => {
   let testing: ReturnType<typeof createTestingApp>;

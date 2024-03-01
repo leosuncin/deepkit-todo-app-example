@@ -4,9 +4,9 @@ import { Database, MemoryDatabaseAdapter } from '@deepkit/orm';
 import type { RemoteController, RpcClient } from '@deepkit/rpc';
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 
-import { Task } from '../app/task.entity';
-import { TaskService } from '../app/task.service';
 import { TaskControllerRpc } from './task.controller.rpc';
+import { Task } from './task.entity';
+import { TaskService } from './task.service';
 
 describe('TaskControllerRpc', () => {
   let testing: ReturnType<typeof createTestingApp>;

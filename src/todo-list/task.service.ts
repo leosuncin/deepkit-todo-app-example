@@ -1,4 +1,4 @@
-import { Partial, UUID, uuid } from '@deepkit/type';
+import { Partial, UUID } from '@deepkit/type';
 import { Database } from '@deepkit/orm';
 
 import { Task } from './task.entity';

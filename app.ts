@@ -6,18 +6,11 @@ import { SQLiteDatabaseAdapter } from '@deepkit/sqlite';
 
 import { AppConfig } from './src/app/config';
 import { Service } from './src/app/service';
-import { TaskParameterResolver } from './src/app/task-parameter.resolver';
-import { Task } from './src/app/task.entity';
-import { TaskService } from './src/app/task.service';
 import { HelloWorldControllerCli } from './src/controller/hello-world.cli';
 import { HelloWorldControllerHttp } from './src/controller/hello-world.http';
 import { HelloWorldControllerRpc } from './src/controller/hello-world.rpc';
-import {
-  TaskCreateCommand,
-  TaskListCommand,
-} from './src/controller/task.controller.cli';
-import { TaskControllerHttp } from './src/controller/task.controller.http';
-import { TaskControllerRpc } from './src/controller/task.controller.rpc';
+import { Task } from './src/todo-list/task.entity';
+import { TodoListModule } from './src/todo-list/todo-list.module';
 
 new App({
   config: AppConfig,
@@ -25,10 +18,6 @@ new App({
     HelloWorldControllerCli,
     HelloWorldControllerHttp,
     HelloWorldControllerRpc,
-    TaskListCommand,
-    TaskCreateCommand,
-    TaskControllerHttp,
-    TaskControllerRpc,
   ],
   providers: [
     {
@@ -38,10 +27,8 @@ new App({
       },
     },
     Service,
-    TaskService,
-    TaskParameterResolver,
   ],
-  imports: [new FrameworkModule({ debug: true })],
+  imports: [new FrameworkModule({ debug: true }), new TodoListModule()],
 })
   .loadConfigFromEnv({ envFilePath: ['production.env', '.env'] })
   .setup((module, config: AppConfig) => {
