@@ -6,6 +6,7 @@ import { SQLiteDatabaseAdapter } from '@deepkit/sqlite';
 
 import { AppConfig } from './src/app/config';
 import { Service } from './src/app/service';
+import { User } from './src/auth/user.entity';
 import { HelloWorldControllerCli } from './src/controller/hello-world.cli';
 import { HelloWorldControllerHttp } from './src/controller/hello-world.http';
 import { HelloWorldControllerRpc } from './src/controller/hello-world.rpc';
@@ -23,7 +24,7 @@ new App({
     {
       provide: Database,
       useFactory() {
-        return new Database(new SQLiteDatabaseAdapter('app.db'), [Task]);
+        return new Database(new SQLiteDatabaseAdapter('app.db'), [Task, User]);
       },
     },
     Service,
